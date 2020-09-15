@@ -1,0 +1,13 @@
+.top-bar {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding-left: 50px;
+  height: 75px;
+  background-color: #e71d36;
+  box-shadow: 0px 0px 15px gray;
+  h3 {
+    color: white;
+    font-weight: bold;
+  }
+}

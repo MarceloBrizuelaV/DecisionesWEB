@@ -1,0 +1,33 @@
+.expert {
+  min-height: 60vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+
+  h2 {
+    color: #4a1942;
+    font-weight: bold;
+  }
+
+  &-buttons {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    margin-top: 50px;
+
+    .ant-btn {
+      margin: 20px;
+      height: 50px !important;
+      width: 200px;
+      border: 2px solid #4a1942;
+      color: #4a1942;
+      font-weight: bold;
+      &:hover,
+      :active {
+        color: white;
+        background-color: #4a1942;
+        border: 2px solid #4a1942;
+      }
+    }
+  }
+}

@@ -1,0 +1,21 @@
+.home {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 60vh;
+
+  .ant-btn {
+    height: 50px !important;
+    width: 200px;
+    border: 2px solid #4a1942;
+    color: #4a1942;
+    font-weight: bold;
+    &:hover,
+    :active {
+      color: white;
+      background-color: #4a1942;
+      border: 2px solid #4a1942;
+    }
+  }
+}
