@@ -1,13 +1,25 @@
 import React from "react";
+import { series } from "async";
 //Components
 import { Form, Input, Button, Space, Select, InputNumber } from "antd";
-import { MinusCircleOutlined, PlusOutlined } from "@ant-design/icons";
+import { DeleteOutlined, PlusOutlined } from "@ant-design/icons";
 
 import "./CriteriaForm.scss";
 
-export default function CriteriaForm() {
+export default function CriteriaForm(props) {
+  const { next, setCriteria } = props;
+
   const onFinish = (values) => {
-    console.log(values);
+    series([
+      function (callback) {
+        setCriteria(values);
+        callback(null, "one");
+      },
+      function (callback) {
+        next();
+        callback(null, "two");
+      },
+    ]);
   };
 
   const { Option } = Select;
@@ -19,7 +31,7 @@ export default function CriteriaForm() {
         onFinish={onFinish}
         autoComplete="off"
       >
-        <Form.List name="criterias">
+        <Form.List name="criteria">
           {(fields, { add, remove }) => {
             return (
               <div>
@@ -66,7 +78,7 @@ export default function CriteriaForm() {
                       <InputNumber />
                     </Form.Item>
 
-                    <MinusCircleOutlined
+                    <DeleteOutlined
                       onClick={() => {
                         remove(field.name);
                       }}
@@ -91,7 +103,12 @@ export default function CriteriaForm() {
         </Form.List>
 
         <Form.Item>
-          <Button type="primary" htmlType="submit">
+          <Button
+            type="primary"
+            htmlType="submit"
+            shape="round"
+            className="next"
+          >
             Siguiente
           </Button>
         </Form.Item>

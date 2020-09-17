@@ -1,6 +1,12 @@
-.criteria-form {
-  width: 600px;
+.alternatives-form {
+  min-width: 600px;
   padding: 50px;
+
+  &-alternative {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+  }
 
   .ant-input,
   .ant-select,
