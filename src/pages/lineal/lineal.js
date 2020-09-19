@@ -3,13 +3,15 @@ import React, { useState } from "react";
 import CriteriaForm from "../../forms/CriteriaForm";
 import AlternativesForm from "../../forms/AlternativesForm";
 import MatrixTable from "../../components/MatrixTable";
-import { Steps, Button, message } from "antd";
+import NormalizationForm from "../../forms/NormalizationForm";
+import { Steps } from "antd";
 
 import "./lineal.scss";
 
 export default function Lineal() {
   const [current, setCurrent] = useState(0);
   const [criteria, setCriteria] = useState([]);
+  const [normalization, setNormalization] = useState(null);
   const [alternatives, setAlternatives] = useState(null);
 
   const { Step } = Steps;
@@ -40,7 +42,20 @@ export default function Lineal() {
     },
     {
       title: "Matriz",
-      content: <MatrixTable data={alternatives} criteria={criteria} />,
+      content: (
+        <>
+          <MatrixTable data={alternatives} criteria={criteria} />
+          <NormalizationForm
+            setNormalization={setNormalization}
+            next={next}
+            buttonTitle={"Calcular"}
+          />
+        </>
+      ),
+    },
+    {
+      title: "Resultado",
+      content: <h3>Resultado del Calculo</h3>,
     },
   ];
 

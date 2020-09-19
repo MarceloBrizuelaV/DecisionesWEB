@@ -17,6 +17,9 @@
     "react-scripts": "3.4.3",
     "sass": "^1.26.10"
   },
+  "theme": {
+    "primary-color": "#1088ae"
+  },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",

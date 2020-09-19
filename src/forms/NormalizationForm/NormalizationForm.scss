@@ -1,0 +1,14 @@
+.normalization-form {
+  padding: 20px;
+
+  .ant-btn-primary {
+    background-color: white;
+    border: 1px solid #e71d36;
+    color: #e71d36;
+    &:hover,
+    :active {
+      color: white;
+      background-color: #e71d36;
+    }
+  }
+}

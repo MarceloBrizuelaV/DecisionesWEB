@@ -3,11 +3,13 @@ import React from "react";
 import { Table } from "antd";
 import { map } from "lodash";
 
+import "./MatrixTable.scss";
+
 export default function MatrixTable(props) {
   const { data, criteria } = props;
 
   return (
-    <div>
+    <div className="matrix-table">
       <Table dataSource={data.alternatives}>
         <Table.Column dataIndex="name" title="Alternativa" />
         {map(criteria.criteria, (criteria) => (

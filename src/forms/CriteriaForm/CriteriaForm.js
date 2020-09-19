@@ -75,7 +75,7 @@ export default function CriteriaForm(props) {
                         },
                       ]}
                     >
-                      <InputNumber />
+                      <InputNumber placeholder="Peso" />
                     </Form.Item>
 
                     <DeleteOutlined
