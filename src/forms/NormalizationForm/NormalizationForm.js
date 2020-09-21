@@ -1,18 +1,19 @@
 import React from "react";
 //Components
 import { series } from "async";
-import { Form, Select, Button } from "antd";
+import { Form, Select, Button, InputNumber } from "antd";
 
 import "./NormalizationForm.scss";
 
 export default function NormalizationForm(props) {
-  const { setNormalization, next, buttonTitle } = props;
+  const { setNormalization, next, buttonTitle, distance, setDistance } = props;
   const { Option } = Select;
 
   const onFinish = (values) => {
     series([
       function (callback) {
         setNormalization(values.normalization);
+        if (distance) setDistance(values.distance);
         callback(null, "one");
       },
       function (callback) {
@@ -25,6 +26,21 @@ export default function NormalizationForm(props) {
   return (
     <div className="normalization-form">
       <Form onFinish={onFinish} autoComplete="off">
+        {distance ? (
+          <Form.Item
+            name="distance"
+            rules={[
+              {
+                required: true,
+                message: "Por favor ingresa la distancia p.",
+              },
+            ]}
+          >
+            <InputNumber style={{ width: 120 }} placeholder="Distancia P" />
+          </Form.Item>
+        ) : (
+          <></>
+        )}
         <Form.Item
           name="normalization"
           rules={[

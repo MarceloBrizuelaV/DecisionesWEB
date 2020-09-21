@@ -1,0 +1,49 @@
+.basic {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  .ant-steps-item-process .ant-steps-item-icon {
+    background-color: #4a1942;
+    border-color: #4a1942;
+  }
+
+  .begin {
+    .ant-btn {
+      margin: 10px;
+    }
+  }
+
+  .ant-steps-item-finish .ant-steps-item-icon {
+    border-color: #4a1942;
+    color: #4a1942;
+    svg {
+      color: #4a1942 !important;
+    }
+  }
+  h2 {
+    margin-top: 10px;
+    font-weight: bold;
+    color: #4a1942;
+  }
+
+  &-content {
+    margin-top: 5px;
+    padding: 50px;
+    background-color: white;
+    min-width: 50%;
+
+    .steps-content {
+      margin-top: 16px;
+      border: 1px dashed #e9e9e9;
+      border-radius: 2px;
+      background-color: #fafafa;
+      min-height: 200px;
+      text-align: center;
+    }
+
+    .steps-action {
+      margin-top: 24px;
+    }
+  }
+}

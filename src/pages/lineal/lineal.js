@@ -49,6 +49,7 @@ export default function Lineal() {
             setNormalization={setNormalization}
             next={next}
             buttonTitle={"Calcular"}
+            distance={false}
           />
         </>
       ),
