@@ -57,7 +57,7 @@ export default function Moora() {
 
   return (
     <div className="moora">
-      <h2>Moora</h2>
+      <h2>MOORA</h2>
       <div className="moora-content">
         <Steps current={current}>
           {steps.map((item) => (

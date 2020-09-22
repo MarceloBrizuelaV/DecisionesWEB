@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import { Button, Steps, Modal } from "antd";
 import AlternativesForm from "../../forms/AlternativesForm";
 import MatrixTable from "../../components/MatrixTable";
+import BasicCriteriaForm from "../../forms/CriteriaForm";
 
 import "./basic.scss";
 
@@ -51,6 +52,10 @@ export default function Basic() {
           </Modal>
         </div>
       ),
+    },
+    {
+      title: "Criterios",
+      content: <BasicCriteriaForm next={next} setCriteria={setCriteria} />,
     },
     {
       title: "Alternativas",

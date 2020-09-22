@@ -1,0 +1,37 @@
+.basic-criteria-form {
+  min-width: 600px;
+  padding: 50px;
+
+  .ant-input,
+  .ant-select,
+  .ant-input-number-input {
+    &:hover {
+      border: 1px solid #e71d36;
+    }
+  }
+
+  .ant-icon {
+    color: #e71d36;
+  }
+
+  .ant-btn {
+    color: #e71d36;
+    border: 0.5px dashed #e71d36;
+    &:hover {
+      background-color: #e71d36;
+      border: 1px dashed #e71d36;
+      color: white !important;
+    }
+  }
+
+  .ant-btn-primary {
+    background-color: white;
+    border: 1px solid #e71d36;
+    color: #e71d36;
+    &:hover,
+    :active {
+      color: white;
+      background-color: #e71d36;
+    }
+  }
+}

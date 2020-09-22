@@ -1,10 +1,10 @@
 import React from "react";
 import { series } from "async";
 //Components
-import { Form, Input, Button, Space, Select, Rate } from "antd";
+import { Form, Input, Button, Space, Select, InputNumber } from "antd";
 import { DeleteOutlined, PlusOutlined } from "@ant-design/icons";
 
-import "./CriteriaForm.scss";
+import "./BasicCriteriaForm.scss";
 
 export default function CriteriaForm(props) {
   const { next, setCriteria } = props;
@@ -25,7 +25,7 @@ export default function CriteriaForm(props) {
   const { Option } = Select;
 
   return (
-    <div className="criteria-form">
+    <div className="basic-criteria-form">
       <Form
         name="dynamic_form_nest_item"
         onFinish={onFinish}
@@ -75,7 +75,7 @@ export default function CriteriaForm(props) {
                         },
                       ]}
                     >
-                      <Rate allowHalf defaultValue={2.5} />
+                      <InputNumber placeholder="Peso" />
                     </Form.Item>
 
                     <DeleteOutlined
