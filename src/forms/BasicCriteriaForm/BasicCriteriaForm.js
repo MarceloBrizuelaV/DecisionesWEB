@@ -1,7 +1,7 @@
 import React from "react";
 import { series } from "async";
 //Components
-import { Form, Input, Button, Space, Select, InputNumber } from "antd";
+import { Form, Input, Button, Space, Select, InputNumber, Rate } from "antd";
 import { DeleteOutlined, PlusOutlined } from "@ant-design/icons";
 
 import "./BasicCriteriaForm.scss";
@@ -75,7 +75,7 @@ export default function CriteriaForm(props) {
                         },
                       ]}
                     >
-                      <InputNumber placeholder="Peso" />
+                      <Rate allowHalf defaultValue={2.5} />
                     </Form.Item>
 
                     <DeleteOutlined

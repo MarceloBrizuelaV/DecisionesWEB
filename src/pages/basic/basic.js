@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import { Button, Steps, Modal } from "antd";
 import AlternativesForm from "../../forms/AlternativesForm";
 import MatrixTable from "../../components/MatrixTable";
-import BasicCriteriaForm from "../../forms/CriteriaForm";
+import BasicCriteriaForm from "../../forms/BasicCriteriaForm";
 
 import "./basic.scss";
 
