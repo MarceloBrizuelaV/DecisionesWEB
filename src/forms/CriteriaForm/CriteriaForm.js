@@ -12,7 +12,7 @@ export default function CriteriaForm(props) {
   const onFinish = (values) => {
     series([
       function (callback) {
-        setCriteria(values);
+        setCriteria(values.criteria);
         callback(null, "one");
       },
       function (callback) {

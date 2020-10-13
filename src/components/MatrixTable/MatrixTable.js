@@ -10,9 +10,9 @@ export default function MatrixTable(props) {
 
   return (
     <div className="matrix-table">
-      <Table dataSource={data.alternatives}>
+      <Table dataSource={data}>
         <Table.Column dataIndex="name" title="Alternativa" />
-        {map(criteria.criteria, (criteria) => (
+        {map(criteria, (criteria) => (
           <Table.Column dataIndex={criteria.name} title={`${criteria.name}`} />
         ))}
       </Table>

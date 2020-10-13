@@ -12,10 +12,10 @@ export default function AlternativesForm(props) {
   const { criteria, setAlternatives, next, prev } = props;
 
   const onFinish = (values) => {
-    console.log(values);
+    console.log(values.alternatives);
     series([
       function (callback) {
-        setAlternatives(values);
+        setAlternatives(values.alternatives);
         callback(null, "one");
       },
       function (callback) {
@@ -53,7 +53,7 @@ export default function AlternativesForm(props) {
                       >
                         <Input placeholder="Alternativa" />
                       </Form.Item>
-                      {map(criteria.criteria, (criteria) => (
+                      {map(criteria, (criteria) => (
                         <Space
                           key={field.key}
                           style={{
