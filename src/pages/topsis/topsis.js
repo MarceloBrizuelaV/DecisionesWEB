@@ -24,6 +24,8 @@ export default function Topsis() {
   //Matrix
   const [normalizedMatrix, setNormalizedMatrix] = useState([]);
   const [ponderatedMatrix, setPonderatedMatrix] = useState([]);
+  const [idealsMatrix, setidealMatrix] = useState([]);
+  const [sMatrix, setsMatrix] = useState([]);
   const [resultMatrix, setResultMatrix] = useState([]);
 
   const [current, setCurrent] = useState(0);
@@ -33,7 +35,7 @@ export default function Topsis() {
   const [alternatives, setAlternatives] = useState(null);
   const [distance, setDistance] = useState(0);
 
-  //Table Column
+  //Tables Columns
   const [tableColumns, setTableColumns] = useState([
     {
       title: "Alternativa",
@@ -41,6 +43,40 @@ export default function Topsis() {
       key: "name",
     },
   ]);
+  //S Table Columns
+  const sTableColumns = [
+    {
+      title: "Alternativa",
+      dataIndex: "name",
+      key: "name",
+    },
+    {
+      title: "S+",
+      dataIndex: "splus",
+      key: "splus",
+    },
+    {
+      title: "S-",
+      dataIndex: "sminus",
+      key: "sminus",
+    },
+  ];
+
+  //Result Table Column
+  const resultTableColumn = [
+    {
+      title: "Alternativa",
+      dataIndex: "name",
+      key: "name",
+    },
+    {
+      title: "C*",
+      dataIndex: "value",
+      key: "value",
+      defaultSortOrder: "descend",
+      sorter: (a, b) => a.value - b.value,
+    },
+  ];
 
   const { Step } = Steps;
 
@@ -51,22 +87,6 @@ export default function Topsis() {
   const prev = () => {
     setCurrent(current - 1);
   };
-
-  //Result Table Column
-  const resultTableColumn = [
-    {
-      title: "Alternativa",
-      dataIndex: "name",
-      key: "name",
-    },
-    {
-      title: "Valor",
-      dataIndex: "value",
-      key: "value",
-      defaultSortOrder: "descend",
-      sorter: (a, b) => a.value - b.value,
-    },
-  ];
 
   //Criteria to Column - Creates columns based on the criterias
   const criteriaToColumn = (criteria) => {
@@ -83,22 +103,8 @@ export default function Topsis() {
     setTableColumns(tableColumns);
   };
 
-  //TESTING ZONE
-  useEffect(() => {
-    let testMatrix = [
-      [0.125, 0.5],
-      [0.05, 0.2],
-    ];
-    let testCriteria = [
-      { name: "crit1", weight: 0.5, kind: "max" },
-      { name: "crit2", weight: 0.2, kind: "min" },
-    ];
-    createIdealMatrix(testMatrix, testCriteria);
-  }, []);
-
   //Create Ideal Matrix
   const createIdealMatrix = (matrix, criteria) => {
-    console.log(matrix, criteria);
     let idealMatrix = [null, null];
     //Buscar Maximo y Minimo de Cada Fila
     for (let i = 0; i < matrix.length; i++) {
@@ -113,7 +119,102 @@ export default function Topsis() {
     return idealMatrix;
   };
 
-  const createToIdealMatrix = (matrix, idealMatrix) => {};
+  //Create ToIdealMatrix
+  const createToIdealMatrix = (matrix, idealMatrix, distance) => {
+    let toIdealMatrix = cloneDeep(matrix);
+    //Valor Absoluto al cuadrado del (valor de alternativa - ideal)
+    for (let i = 0; i < idealMatrix.length; i++) {
+      for (let j = 0; j < toIdealMatrix[i].length; j++) {
+        toIdealMatrix[i][j] = Math.pow(
+          Math.abs(toIdealMatrix[i][j] - idealMatrix[i][0]),
+          distance
+        );
+      }
+    }
+    return toIdealMatrix;
+  };
+
+  //Create ToAntiIdealMatrix
+  const createToAntiIdealMatrix = (matrix, idealMatrix, distance) => {
+    let toAntiIdealMatrix = cloneDeep(matrix);
+    //Valor Absoluto al cuadrado del (valor de alternativa - ideal)
+    for (let i = 0; i < idealMatrix.length; i++) {
+      for (let j = 0; j < toAntiIdealMatrix[i].length; j++) {
+        toAntiIdealMatrix[i][j] = Math.pow(
+          Math.abs(toAntiIdealMatrix[i][j] - idealMatrix[i][1]),
+          distance
+        );
+      }
+    }
+    return toAntiIdealMatrix;
+  };
+
+  //Create S+ Array
+  const createSPlusArray = (matrix, distance) => {
+    let length = matrix[0].length;
+    let sPlusArray = [];
+    for (let i = 0; i < length; i++) {
+      let sum = 0;
+      //Sumo todos los valores
+      for (let j = 0; j < matrix.length; j++) {
+        sum = sum + matrix[j][i];
+      }
+      //Calculo el valor de S+ y lo pusheo
+      sum = Math.pow(sum, 1 / distance);
+      sPlusArray.push(sum);
+    }
+    return sPlusArray;
+  };
+
+  //Create S- Array
+  const createSMinusArray = (matrix, distance) => {
+    let sMinusArray = [];
+    let length = matrix[0].length;
+    for (let i = 0; i < length; i++) {
+      let sum = 0;
+      //Sumo todos los valores
+      for (let j = 0; j < matrix.length; j++) {
+        sum = sum + matrix[j][i];
+      }
+      //Calculo el valor de S+ y lo pusheo
+      sum = Math.pow(sum, 1 / distance);
+      sMinusArray.push(sum);
+    }
+    return sMinusArray;
+  };
+
+  //Create C* Array
+  const createCArray = (sPlusArray, sMinusArray) => {
+    let cArray = [];
+    let length = sPlusArray.length;
+    for (let i = 0; i < length; i++) {
+      let ci = sMinusArray[i] / (sPlusArray[i] + sMinusArray[i]);
+      cArray.push(ci);
+    }
+    return cArray;
+  };
+
+  //Creats the Matrix between S+ and S-
+  const createSMatrix = (sPlusArray, sMinusArray, alternatives) => {
+    let sMatrix = [];
+    for (let i = 0; i < sPlusArray.length; i++) {
+      sMatrix.push({
+        name: alternatives[i].name,
+        splus: sPlusArray[i],
+        sminus: sMinusArray[i],
+      });
+    }
+    setsMatrix(sMatrix);
+  };
+
+  //Create Final Matrix - Joins C* array with Alternatives for a final show
+  const createFinalMatrix = (cArray, alternatives) => {
+    let finalMatrix = [];
+    for (let i = 0; i < alternatives.length; i++) {
+      finalMatrix.push({ name: alternatives[i].name, value: cArray[i] });
+    }
+    return finalMatrix;
+  };
 
   const normalizeMatrix = (matrix, alternatives, criteria) => {
     //First Step - Normalice Matrix
@@ -156,26 +257,9 @@ export default function Topsis() {
     for (var i = 0; i < matrix.length; i++) {
       for (var j = 0; j < matrix[i].length; j++) {
         matrix[i][j] = matrix[i][j] * criteria[i].weight;
-        console.log(matrix);
       }
     }
     return matrix;
-  };
-
-  //Esta funcion sumariza y retorna el resultado final
-  const sumarize = (matrix, alternatives) => {
-    var results = [];
-    for (var j = 0; j < matrix[0].length; j++) {
-      var sum = 0;
-      for (var i = 0; i < matrix.length; i++) {
-        sum += matrix[i][j];
-      }
-      results.push({
-        name: alternatives[j].name,
-        value: sum,
-      });
-    }
-    return results;
   };
 
   //Funcion de Calculo
@@ -212,17 +296,34 @@ export default function Topsis() {
           var idealMatrix = createIdealMatrix(matrix, criteria);
           //Matriz Distancia al Ideal
           var toIdealMatrix = cloneDeep(matrix);
-          //Trabajo con matriz ideal
-
+          //Trabajo con matriz ideal - Le paso la copia de la matriz original y la matriz ideal (a+;a-)
+          toIdealMatrix = createToIdealMatrix(
+            toIdealMatrix,
+            idealMatrix,
+            distance
+          );
           //Matriz Distancia al Anti Ideal
           var toAntiIdealMatrix = cloneDeep(matrix);
-        },
-        function (callback) {
-          //DE LA MATRIZ PONDERADA LE RESTAMOS LOS VALORES AL MAXIMO O AL MINIMO
-
-          //Sumarizamos los pesos y obtenemos el resultado final
-          setResultMatrix(sumarize(matrix, alternatives));
-          callback(null, "Resultado");
+          //Trabajo con matriz ideal - Le paso la copia de la matriz original y la matriz ideal (a+;a-)
+          toAntiIdealMatrix = createToAntiIdealMatrix(
+            toAntiIdealMatrix,
+            idealMatrix,
+            distance
+          );
+          //Calculamos los Array de S+ y S-
+          //Calculamos Array S+
+          var sPlusArray = createSPlusArray(toIdealMatrix, distance);
+          //Calculamos Array S-
+          var sMinusArray = createSMinusArray(toAntiIdealMatrix, distance);
+          //Seteamos para mostrar S
+          console.log(sPlusArray);
+          console.log(sMinusArray);
+          createSMatrix(sPlusArray, sMinusArray, alternatives);
+          //Calculamos C*
+          var cArray = createCArray(sPlusArray, sMinusArray);
+          //Creamos Matriz Final
+          setResultMatrix(createFinalMatrix(cArray, alternatives));
+          callback(null, "Fin");
         },
       ],
       // optional callback
@@ -283,6 +384,12 @@ export default function Topsis() {
               <Table
                 columns={tableColumns}
                 dataSource={ponderatedMatrix}
+                pagination={false}
+              />
+              <h3>Matriz S</h3>
+              <Table
+                columns={sTableColumns}
+                dataSource={sMatrix}
                 pagination={false}
               />
               <h3>Resultado</h3>
