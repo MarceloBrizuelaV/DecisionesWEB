@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 //Components
 import { Steps, Button, Table } from "antd";
 import CriteriaForm from "../../forms/CriteriaForm";
@@ -104,17 +104,19 @@ export default function Topsis() {
   };
 
   //Create Ideal Matrix
-  const createIdealMatrix = (matrix, criteria) => {
+  const createIdealMatrix = (matrix) => {
     let idealMatrix = [null, null];
     //Buscar Maximo y Minimo de Cada Fila
     for (let i = 0; i < matrix.length; i++) {
       let maxV = max(matrix[i]);
       let minV = min(matrix[i]);
-      if (criteria[i].kind === "max") {
-        idealMatrix[i] = [maxV, minV];
-      } else {
-        idealMatrix[i] = [minV, maxV];
-      }
+      idealMatrix[i] = [maxV, minV];
+      //
+      //if (criteria[i].kind === "max") {
+
+      //} else {
+      //  idealMatrix[i] = [minV, maxV];
+      // }
     }
     return idealMatrix;
   };
@@ -168,8 +170,8 @@ export default function Topsis() {
 
   //Create S- Array
   const createSMinusArray = (matrix, distance) => {
-    let sMinusArray = [];
     let length = matrix[0].length;
+    let sMinusArray = [];
     for (let i = 0; i < length; i++) {
       let sum = 0;
       //Sumo todos los valores
@@ -185,6 +187,8 @@ export default function Topsis() {
 
   //Create C* Array
   const createCArray = (sPlusArray, sMinusArray) => {
+    console.log(sMinusArray);
+    console.log(sPlusArray);
     let cArray = [];
     let length = sPlusArray.length;
     for (let i = 0; i < length; i++) {
@@ -295,18 +299,16 @@ export default function Topsis() {
           //Distancia al Ideal
           var idealMatrix = createIdealMatrix(matrix, criteria);
           //Matriz Distancia al Ideal
-          var toIdealMatrix = cloneDeep(matrix);
           //Trabajo con matriz ideal - Le paso la copia de la matriz original y la matriz ideal (a+;a-)
-          toIdealMatrix = createToIdealMatrix(
-            toIdealMatrix,
+          var toIdealMatrix = createToIdealMatrix(
+            matrix,
             idealMatrix,
             distance
           );
           //Matriz Distancia al Anti Ideal
-          var toAntiIdealMatrix = cloneDeep(matrix);
           //Trabajo con matriz ideal - Le paso la copia de la matriz original y la matriz ideal (a+;a-)
-          toAntiIdealMatrix = createToAntiIdealMatrix(
-            toAntiIdealMatrix,
+          var toAntiIdealMatrix = createToAntiIdealMatrix(
+            matrix,
             idealMatrix,
             distance
           );
