@@ -1,6 +1,6 @@
 import React from "react";
 //Components
-import { Form, Input, Button, Space, Select, InputNumber } from "antd";
+import { Form, Input, Button, Space, message } from "antd";
 import { DeleteOutlined, PlusOutlined } from "@ant-design/icons";
 //Functions
 import { map } from "lodash";
@@ -12,17 +12,20 @@ export default function AlternativesForm(props) {
   const { criteria, setAlternatives, next, prev } = props;
 
   const onFinish = (values) => {
-    console.log(values.alternatives);
-    series([
-      function (callback) {
-        setAlternatives(values.alternatives);
-        callback(null, "one");
-      },
-      function (callback) {
-        next();
-        callback(null, "two");
-      },
-    ]);
+    if (values.alternatives?.length > 1) {
+      series([
+        function (callback) {
+          setAlternatives(values.alternatives);
+          callback(null, "one");
+        },
+        function (callback) {
+          next();
+          callback(null, "two");
+        },
+      ]);
+    } else {
+      message.error("Debes ingresar al menos dos alternativas");
+    }
   };
 
   return (

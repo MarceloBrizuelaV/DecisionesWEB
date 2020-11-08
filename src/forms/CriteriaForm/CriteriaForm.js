@@ -1,7 +1,7 @@
 import React from "react";
 import { series } from "async";
 //Components
-import { Form, Input, Button, Space, Select, InputNumber } from "antd";
+import { Form, Input, Button, Space, Select, InputNumber, message } from "antd";
 import { DeleteOutlined, PlusOutlined } from "@ant-design/icons";
 
 import "./CriteriaForm.scss";
@@ -10,16 +10,20 @@ export default function CriteriaForm(props) {
   const { next, setCriteria } = props;
 
   const onFinish = (values) => {
-    series([
-      function (callback) {
-        setCriteria(values.criteria);
-        callback(null, "one");
-      },
-      function (callback) {
-        next();
-        callback(null, "two");
-      },
-    ]);
+    if (values.criteria?.length > 0) {
+      series([
+        function (callback) {
+          setCriteria(values.criteria);
+          callback(null, "one");
+        },
+        function (callback) {
+          next();
+          callback(null, "two");
+        },
+      ]);
+    } else {
+      message.error("Debe ingresar al menos un criterio");
+    }
   };
 
   const { Option } = Select;
@@ -58,10 +62,21 @@ export default function CriteriaForm(props) {
                       {...field}
                       name={[field.name, "kind"]}
                       fieldKey={[field.fieldKey, "kind"]}
+                      rules={[
+                        {
+                          required: true,
+                          message:
+                            "Por favor selecciona un objetivo del criterio",
+                        },
+                      ]}
                     >
-                      <Select defaultValue="max" style={{ width: 120 }}>
-                        <Option value="max">Max</Option>
-                        <Option value="min">Min</Option>
+                      <Select style={{ width: 120 }}>
+                        <Option value="max" key={"max"}>
+                          Max
+                        </Option>
+                        <Option value="min" key={"min"}>
+                          Min
+                        </Option>
                       </Select>
                     </Form.Item>
                     <Form.Item
@@ -101,7 +116,6 @@ export default function CriteriaForm(props) {
             );
           }}
         </Form.List>
-
         <Form.Item>
           <Button
             type="primary"
