@@ -7,7 +7,7 @@ import "./MooraMethod.scss";
 
 export default function MooraMethod(props) {
   const { Option } = Select;
-  const { next, setMooraMethod } = props;
+  const { next, setMooraMethod, calculate } = props;
 
   const onFinish = (values) => {
     series([
@@ -16,6 +16,7 @@ export default function MooraMethod(props) {
         callback(null, "one");
       },
       function (callback) {
+        calculate();
         next();
         callback(null, "two");
       },
@@ -34,7 +35,10 @@ export default function MooraMethod(props) {
             },
           ]}
         >
-          <Select placeholder="Tipo de Moora">
+          <Select
+            placeholder="Tipo de Moora"
+            onChange={(value) => setMooraMethod(value)}
+          >
             <Option value="referencePoint">Por Punto de Referencia</Option>
             <Option value="base">Base</Option>
           </Select>

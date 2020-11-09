@@ -9,7 +9,7 @@ import { series } from "async";
 import "./AlternativesForm.scss";
 
 export default function AlternativesForm(props) {
-  const { criteria, setAlternatives, next, prev } = props;
+  const { criteria, setAlternatives, next } = props;
 
   const onFinish = (values) => {
     if (values.alternatives?.length > 1) {
@@ -76,7 +76,10 @@ export default function AlternativesForm(props) {
                               },
                             ]}
                           >
-                            <Input placeholder={`${criteria.name}`} />
+                            <Input
+                              placeholder={`${criteria.name}`}
+                              type="number"
+                            />
                           </Form.Item>
                         </Space>
                       ))}
@@ -108,14 +111,6 @@ export default function AlternativesForm(props) {
         </Form.List>
 
         <Form.Item>
-          <Button
-            type="primary"
-            onClick={() => prev()}
-            shape="round"
-            className="next"
-          >
-            Anterior
-          </Button>
           <Button
             type="primary"
             htmlType="submit"

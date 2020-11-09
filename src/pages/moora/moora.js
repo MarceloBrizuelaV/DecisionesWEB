@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 //Components
 import { Steps, Button, Table } from "antd";
 import CriteriaForm from "../../forms/CriteriaForm";
@@ -65,12 +65,10 @@ export default function Moora() {
 
   const next = () => {
     setCurrent(current + 1);
-    console.log(criteria);
-    console.log(alternatives);
   };
 
-  const prev = () => {
-    setCurrent(current - 1);
+  const goTo = (page) => {
+    setCurrent(page);
   };
 
   //Esta funcion pondera la matriz
@@ -210,7 +208,6 @@ export default function Moora() {
       content: (
         <AlternativesForm
           next={next}
-          prev={prev}
           criteria={criteria}
           setAlternatives={setAlternatives}
         />
@@ -221,7 +218,11 @@ export default function Moora() {
       content: (
         <>
           <MatrixTable data={alternatives} criteria={criteria} />
-          <MooraMethod setMooraMethod={setMooraMethod} next={next} />
+          <MooraMethod
+            setMooraMethod={setMooraMethod}
+            next={next}
+            calculate={calculate}
+          />
         </>
       ),
     },
@@ -229,7 +230,6 @@ export default function Moora() {
       title: "Resultado",
       content: (
         <>
-          <Button onClick={calculate}>Calcular</Button>
           {isLoading ? (
             <></>
           ) : (
@@ -269,6 +269,19 @@ export default function Moora() {
           ))}
         </Steps>
         <div className="steps-content">{steps[current].content}</div>
+        <a href="/home">
+          <Button shape="round" style={{ marginTop: 15 }}>
+            Menú Principal
+          </Button>
+        </a>
+        <Button
+          shape="round"
+          type="primary"
+          style={{ marginLeft: 15 }}
+          onClick={() => goTo(0)}
+        >
+          Calcular de Nuevo
+        </Button>
       </div>
     </div>
   );

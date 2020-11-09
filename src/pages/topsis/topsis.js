@@ -24,7 +24,6 @@ export default function Topsis() {
   //Matrix
   const [normalizedMatrix, setNormalizedMatrix] = useState([]);
   const [ponderatedMatrix, setPonderatedMatrix] = useState([]);
-  const [idealsMatrix, setidealMatrix] = useState([]);
   const [sMatrix, setsMatrix] = useState([]);
   const [resultMatrix, setResultMatrix] = useState([]);
 
@@ -84,8 +83,8 @@ export default function Topsis() {
     setCurrent(current + 1);
   };
 
-  const prev = () => {
-    setCurrent(current - 1);
+  const goTo = (page) => {
+    setCurrent(page);
   };
 
   //Criteria to Column - Creates columns based on the criterias
@@ -110,13 +109,15 @@ export default function Topsis() {
     for (let i = 0; i < matrix.length; i++) {
       let maxV = max(matrix[i]);
       let minV = min(matrix[i]);
-      idealMatrix[i] = [maxV, minV];
-      //
-      //if (criteria[i].kind === "max") {
 
-      //} else {
-      //  idealMatrix[i] = [minV, maxV];
-      // }
+      if (criteria[i].kind === "max") {
+        maxV = max(matrix[i]);
+        minV = min(matrix[i]);
+      } else {
+        maxV = min(matrix[i]);
+        minV = max(matrix[i]);
+      }
+      idealMatrix[i] = [maxV, minV];
     }
     return idealMatrix;
   };
@@ -346,7 +347,6 @@ export default function Topsis() {
       content: (
         <AlternativesForm
           next={next}
-          prev={prev}
           criteria={criteria}
           setAlternatives={setAlternatives}
         />
@@ -361,6 +361,7 @@ export default function Topsis() {
             distance={true}
             setNormalization={setNormalization}
             next={next}
+            calculate={calculate}
             buttonTitle={"Calcular"}
             setDistance={setDistance}
           />
@@ -371,7 +372,6 @@ export default function Topsis() {
       title: "Resultado",
       content: (
         <>
-          <Button onClick={calculate}>Calcular</Button>
           {isLoading ? (
             <></>
           ) : (
@@ -417,6 +417,19 @@ export default function Topsis() {
           ))}
         </Steps>
         <div className="steps-content">{steps[current].content}</div>
+        <a href="/home">
+          <Button shape="round" style={{ marginTop: 15 }}>
+            Menú Principal
+          </Button>
+        </a>
+        <Button
+          shape="round"
+          type="primary"
+          style={{ marginLeft: 15 }}
+          onClick={() => goTo(0)}
+        >
+          Calcular de Nuevo
+        </Button>
       </div>
     </div>
   );

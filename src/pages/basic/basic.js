@@ -25,6 +25,10 @@ export default function Basic() {
     setCurrent(current - 1);
   };
 
+  const goTo = (page) => {
+    setCurrent(page);
+  };
+
   const steps = [
     {
       title: "Inicio",
@@ -92,6 +96,19 @@ export default function Basic() {
           ))}
         </Steps>
         <div className="steps-content">{steps[current].content}</div>
+        <a href="/home">
+          <Button shape="round" style={{ marginTop: 15 }}>
+            Menú Principal
+          </Button>
+        </a>
+        <Button
+          shape="round"
+          type="primary"
+          style={{ marginLeft: 15 }}
+          onClick={() => goTo(0)}
+        >
+          Calcular de Nuevo
+        </Button>
       </div>
     </div>
   );

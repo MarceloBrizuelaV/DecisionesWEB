@@ -10,7 +10,7 @@ export default function CriteriaForm(props) {
   const { next, setCriteria } = props;
 
   const onFinish = (values) => {
-    if (values.criteria?.length > 0) {
+    if (values.criteria?.length > 1) {
       series([
         function (callback) {
           setCriteria(values.criteria);
@@ -22,7 +22,7 @@ export default function CriteriaForm(props) {
         },
       ]);
     } else {
-      message.error("Debe ingresar al menos un criterio");
+      message.error("Debe ingresar al menos dos criterios");
     }
   };
 

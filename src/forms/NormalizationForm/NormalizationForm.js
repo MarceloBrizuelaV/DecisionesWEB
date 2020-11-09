@@ -6,7 +6,14 @@ import { Form, Select, Button, InputNumber } from "antd";
 import "./NormalizationForm.scss";
 
 export default function NormalizationForm(props) {
-  const { setNormalization, next, buttonTitle, distance, setDistance } = props;
+  const {
+    setNormalization,
+    next,
+    buttonTitle,
+    distance,
+    setDistance,
+    calculate,
+  } = props;
   const { Option } = Select;
 
   const onFinish = (values) => {
@@ -17,6 +24,7 @@ export default function NormalizationForm(props) {
         callback(null, "one");
       },
       function (callback) {
+        calculate();
         next();
         callback(null, "two");
       },
@@ -36,7 +44,11 @@ export default function NormalizationForm(props) {
               },
             ]}
           >
-            <InputNumber style={{ width: 120 }} placeholder="Distancia P" />
+            <InputNumber
+              style={{ width: 120 }}
+              placeholder="Distancia P"
+              onChange={(value) => setDistance(value)}
+            />
           </Form.Item>
         ) : (
           <></>
@@ -50,7 +62,10 @@ export default function NormalizationForm(props) {
             },
           ]}
         >
-          <Select placeholder="Método de Normalización">
+          <Select
+            placeholder="Método de Normalización"
+            onChange={(value) => setNormalization(value)}
+          >
             <Option value="maximum">Por Máximo</Option>
             <Option value="sum">Por la Suma</Option>
             <Option value="root">Raiz Sumatoria de Cuadrados</Option>

@@ -59,8 +59,8 @@ export default function Lineal() {
     setCurrent(current + 1);
   };
 
-  const prev = () => {
-    setCurrent(current - 1);
+  const goTo = (page) => {
+    setCurrent(page);
   };
 
   //Matrix to JSON
@@ -125,12 +125,16 @@ export default function Lineal() {
   };
 
   //Esta funcion sumariza y retorna el resultado final
-  const sumarize = (matrix, alternatives) => {
+  const sumarize = (matrix, alternatives, criteria) => {
     var results = [];
     for (var j = 0; j < matrix[0].length; j++) {
       var sum = 0;
       for (var i = 0; i < matrix.length; i++) {
-        sum += matrix[i][j];
+        if (criteria[i].kind === "max") {
+          sum += matrix[i][j];
+        } else {
+          sum -= matrix[i][j];
+        }
       }
       results.push({
         name: alternatives[j].name,
@@ -172,7 +176,7 @@ export default function Lineal() {
         },
         function (callback) {
           //Sumarizamos los pesos y obtenemos el resultado final
-          setResultMatrix(sumarize(matrix, alternatives));
+          setResultMatrix(sumarize(matrix, alternatives, criteria));
           callback(null, "Resultado");
         },
       ],
@@ -194,7 +198,6 @@ export default function Lineal() {
       content: (
         <AlternativesForm
           next={next}
-          prev={prev}
           criteria={criteria}
           setAlternatives={setAlternatives}
         />
@@ -208,6 +211,7 @@ export default function Lineal() {
           <NormalizationForm
             setNormalization={setNormalization}
             next={next}
+            calculate={calculate}
             buttonTitle={"Siguiente"}
             distance={false}
           />
@@ -218,7 +222,6 @@ export default function Lineal() {
       title: "Resultado",
       content: (
         <>
-          <Button onClick={calculate}>Calcular</Button>
           {isLoading ? (
             <></>
           ) : (
@@ -258,6 +261,19 @@ export default function Lineal() {
           ))}
         </Steps>
         <div className="steps-content">{steps[current].content}</div>
+        <a href="/home">
+          <Button shape="round" style={{ marginTop: 15 }}>
+            Menú Principal
+          </Button>
+        </a>
+        <Button
+          shape="round"
+          type="primary"
+          style={{ marginLeft: 15 }}
+          onClick={() => goTo(0)}
+        >
+          Calcular de Nuevo
+        </Button>
       </div>
     </div>
   );
