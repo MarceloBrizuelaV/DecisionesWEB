@@ -39,15 +39,22 @@ export const normalizeByRootSum = (matrix) => {
 };
 
 //This function normalizes by the maximum
-export const normalizeByMax = (matrix) => {
+export const normalizeByMax = (matrix, criteria) => {
   var normalizedMatrix = cloneDeep(matrix);
   //This for runs through every criteria
   for (var i = 0; i < normalizedMatrix.length; i++) {
     //This for runs through every alternative under a certain criteria and finds the maximum
-    var maxValue = max(normalizedMatrix[i]);
-    //Divides each value by the maximum of the criteria
-    for (var z = 0; z < normalizedMatrix[i].length; z++) {
-      normalizedMatrix[i][z] = normalizedMatrix[i][z] / maxValue;
+    var maxValue = null;
+    if (criteria[i].kind === "max") {
+      maxValue = max(normalizedMatrix[i]);
+      for (let z = 0; z < normalizedMatrix[i].length; z++) {
+        normalizedMatrix[i][z] = normalizedMatrix[i][z] / maxValue;
+      }
+    } else {
+      maxValue = min(normalizedMatrix[i]);
+      for (let z = 0; z < normalizedMatrix[i].length; z++) {
+        normalizedMatrix[i][z] = maxValue / normalizedMatrix[i][z];
+      }
     }
   }
   return normalizedMatrix;

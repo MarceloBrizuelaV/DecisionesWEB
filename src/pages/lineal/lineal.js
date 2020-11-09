@@ -78,7 +78,7 @@ export default function Lineal() {
     //First Step - Normalice Matrix
     switch (normalization) {
       case "maximum":
-        matrix = normalizeByMax(matrix);
+        matrix = normalizeByMax(matrix, criteria);
         break;
       case "sum":
         matrix = normalizeBySum(matrix);
