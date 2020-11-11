@@ -1,7 +1,7 @@
 import React from "react";
 import { series } from "async";
 //Components
-import { Form, Input, Button, Space, Select, InputNumber, Rate } from "antd";
+import { Form, Input, Button, Space, Select, Rate } from "antd";
 import { DeleteOutlined, PlusOutlined } from "@ant-design/icons";
 
 import "./BasicCriteriaForm.scss";
@@ -10,9 +10,10 @@ export default function CriteriaForm(props) {
   const { next, setCriteria } = props;
 
   const onFinish = (values) => {
+    normalizeRates(values.criteria);
     series([
       function (callback) {
-        setCriteria(values);
+        setCriteria(values.criteria);
         callback(null, "one");
       },
       function (callback) {
@@ -23,6 +24,13 @@ export default function CriteriaForm(props) {
   };
 
   const { Option } = Select;
+
+  const normalizeRates = (criteria) => {
+    for (let i = 0; i < criteria.length; i++) {
+      criteria[i].weight = criteria[i].weight / 5;
+      console.log(criteria);
+    }
+  };
 
   return (
     <div className="basic-criteria-form">
@@ -58,8 +66,14 @@ export default function CriteriaForm(props) {
                       {...field}
                       name={[field.name, "kind"]}
                       fieldKey={[field.fieldKey, "kind"]}
+                      rules={[
+                        {
+                          required: true,
+                          message: "Por favor ingresa el objetivo del criterio",
+                        },
+                      ]}
                     >
-                      <Select defaultValue="max" style={{ width: 120 }}>
+                      <Select style={{ width: 120 }}>
                         <Option value="max">Max</Option>
                         <Option value="min">Min</Option>
                       </Select>

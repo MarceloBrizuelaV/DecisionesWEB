@@ -266,14 +266,11 @@ export default function Lineal() {
             Menú Principal
           </Button>
         </a>
-        <Button
-          shape="round"
-          type="primary"
-          style={{ marginLeft: 15 }}
-          onClick={() => goTo(0)}
-        >
-          Calcular de Nuevo
-        </Button>
+        <a href="/home/lineal">
+          <Button shape="round" type="primary" style={{ marginLeft: 15 }}>
+            Calcular de Nuevo
+          </Button>
+        </a>
       </div>
     </div>
   );

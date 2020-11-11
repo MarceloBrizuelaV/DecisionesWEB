@@ -24,6 +24,20 @@ export default function Moora() {
   const [normalizedMatrix, setNormalizedMatrix] = useState([]);
   const [ponderatedMatrix, setPonderatedMatrix] = useState([]);
   const [resultMatrix, setResultMatrix] = useState([]);
+  const [resultTableColumn, setResultTableColumn] = useState([
+    {
+      title: "Alternativa",
+      dataIndex: "name",
+      key: "name",
+    },
+    {
+      title: "Valor",
+      dataIndex: "value",
+      key: "value",
+      defaultSortOrder: "descend",
+      sorter: (a, b) => a.value - b.value,
+    },
+  ]);
   //Table Column
   const [tableColumns, setTableColumns] = useState([
     {
@@ -44,22 +58,6 @@ export default function Moora() {
     return resultJson;
   };
 
-  //Result Table Column
-  const resultTableColumn = [
-    {
-      title: "Alternativa",
-      dataIndex: "name",
-      key: "name",
-    },
-    {
-      title: "Valor",
-      dataIndex: "value",
-      key: "value",
-      defaultSortOrder: "descend",
-      sorter: (a, b) => a.value - b.value,
-    },
-  ];
-
   //Steps
   const { Step } = Steps;
 
@@ -69,6 +67,24 @@ export default function Moora() {
 
   const goTo = (page) => {
     setCurrent(page);
+  };
+
+  //Esta funcion cambia el ordenamiento de la tabla
+  const changeResultTableColumn = () => {
+    setResultTableColumn([
+      {
+        title: "Alternativa",
+        dataIndex: "name",
+        key: "name",
+      },
+      {
+        title: "Valor",
+        dataIndex: "value",
+        key: "value",
+        defaultSortOrder: "ascend",
+        sorter: (a, b) => a.value - b.value,
+      },
+    ]);
   };
 
   //Esta funcion pondera la matriz
@@ -179,6 +195,7 @@ export default function Moora() {
           //Moora Base
           if (mooraMethod === "referencePoint") {
             result = mooraReferencePoint(matrix, criteria);
+            changeResultTableColumn();
           } else {
             //Moora con Punto de referencia
             result = mooraBase(matrix, criteria);
@@ -274,14 +291,16 @@ export default function Moora() {
             Menú Principal
           </Button>
         </a>
-        <Button
-          shape="round"
-          type="primary"
-          style={{ marginLeft: 15 }}
-          onClick={() => goTo(0)}
-        >
-          Calcular de Nuevo
-        </Button>
+        <a href="/home/moora">
+          <Button
+            shape="round"
+            type="primary"
+            style={{ marginLeft: 15 }}
+            onClick={() => goTo(0)}
+          >
+            Calcular de Nuevo
+          </Button>
+        </a>
       </div>
     </div>
   );

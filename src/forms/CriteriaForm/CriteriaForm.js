@@ -1,7 +1,16 @@
 import React from "react";
 import { series } from "async";
 //Components
-import { Form, Input, Button, Space, Select, InputNumber, message } from "antd";
+import {
+  Form,
+  Input,
+  Button,
+  Space,
+  Select,
+  InputNumber,
+  message,
+  Checkbox,
+} from "antd";
 import { DeleteOutlined, PlusOutlined } from "@ant-design/icons";
 
 import "./CriteriaForm.scss";
@@ -11,6 +20,9 @@ export default function CriteriaForm(props) {
 
   const onFinish = (values) => {
     if (values.criteria?.length > 1) {
+      if (values.normalized !== true) {
+        normalizeWeights(values.criteria);
+      }
       series([
         function (callback) {
           setCriteria(values.criteria);
@@ -24,6 +36,17 @@ export default function CriteriaForm(props) {
     } else {
       message.error("Debe ingresar al menos dos criterios");
     }
+  };
+
+  const normalizeWeights = (criteria) => {
+    let sum = 0;
+    for (let i = 0; i < criteria.length; i++) {
+      sum += criteria[i].weight;
+    }
+    for (let j = 0; j < criteria.length; j++) {
+      criteria[j].weight = criteria[j].weight / sum;
+    }
+    console.log(criteria);
   };
 
   const { Option } = Select;
@@ -116,6 +139,9 @@ export default function CriteriaForm(props) {
             );
           }}
         </Form.List>
+        <Form.Item name="normalized" valuePropName="checked">
+          <Checkbox>Los pesos están normalizados</Checkbox>
+        </Form.Item>
         <Form.Item>
           <Button
             type="primary"
