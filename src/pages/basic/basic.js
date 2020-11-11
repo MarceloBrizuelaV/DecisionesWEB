@@ -6,8 +6,9 @@ import MatrixTable from "../../components/MatrixTable";
 import BasicCriteriaForm from "../../forms/BasicCriteriaForm";
 import { normalizeBySum } from "../../utils/Normalization";
 import { toMatrix } from "../../utils/MatrixFunctions";
-import { cloneDeep } from "lodash";
 import { series } from "async";
+import CritIMG from "../../assets/tut-criteria.png";
+import AltIMG from "../../assets/tut-alternativas.png";
 
 import "./basic.scss";
 
@@ -157,15 +158,40 @@ export default function Basic() {
           </Button>
           <Modal
             cancelText={"Cancelar"}
+            width={800}
             closable={false}
             onCancel={handleOk}
             title="Tutorial de Uso"
             visible={showModal}
             onOk={handleOk}
           >
-            <p>Tutorial </p>
-            <p>Tutorial</p>
-            <p>Tutorial</p>
+            <h3>Criterios</h3>
+            <p>
+              Primero debes elegir los criterios para llevar que te mostremos
+              cual es tu mejor alternativa. Los criterios son caracteristicas
+              por las cuales quieres comparar tus alternativas, por ejemplo si
+              estamos comparando celulares un criterio puede ser Memoria Ram.
+              Una vez que seleccionemos debemos elegir un peso para nuestro
+              criterio, este depende de cuantas estrellas le asignemos al
+              criterio. Mientras mas estrellas le coloques mas importante es
+              para tí el criterio. Por ejemplo si te importa mas la memoria RAM
+              sobre el tamaño de la pantalla puedes colocar 4 estrellas en
+              memoria RAM y 2 estrellas en pantalla. Ademas debes elegir si el
+              criterio es de Máximo o Mínimo, por ejemplo si la mejor
+              alternativa es la que tiene mayor memoria RAM, el criterio seria
+              de Maximo ya que el que tenga mayor valor es el mejor.
+            </p>
+            <img src={CritIMG} alt="Tutorial" />
+            <h3>Alternativas</h3>
+            <p>
+              Las alternativas son los distintos objetos que quieres comparar,
+              si queremos comparar telefonos nuestras alternativas podrían ser
+              Moto G, Iphone6, etc. A cada alternativa le debemos colocar un
+              nombre, y el valor que tiene esta alternativa en cada criterio que
+              definimos anteriormente. Por ejemplo si el telefono Moto G tiene
+              6GB de ram, le colocamos un 6 en el criterio Memoria Ram.
+            </p>
+            <img src={AltIMG} alt="Tutorial" />
           </Modal>
         </div>
       ),
