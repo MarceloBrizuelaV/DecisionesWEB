@@ -69,6 +69,19 @@ export default function Basic() {
     setTableColumns(tableColumns);
   };
 
+  //Función para maximizar los minimos
+  const maximizarMinimo = (alternatives, matrix, criteria) => {
+    for (let i = 0; i < criteria.length; i++) {  
+      if (criteria[i].kind === "min") {
+        for (let j = 0; j < alternatives.length; j++) {
+          matrix[i][j] = 1/matrix[i][j];      
+         }
+          criteria[i].kind = "max"
+        }
+      }
+  }
+
+
   //Esta funcion pondera la matriz
   const ponderateMatrix = (matrix, criteria) => {
     for (var i = 0; i < matrix.length; i++) {
@@ -114,6 +127,7 @@ export default function Basic() {
           criteriaToColumn(criteria);
           //Paso los valores de cada criterio a una matriz para poder trabajarla
           matrix = toMatrix(criteria, alternatives);
+          maximizarMinimo(alternatives, matrix, criteria);
           callback(null, "Configuracion Inicial");
         },
         function (callback) {

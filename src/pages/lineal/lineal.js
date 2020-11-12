@@ -74,8 +74,22 @@ export default function Lineal() {
     return resultJson;
   };
 
+  //Función para maximizar los minimos
+    const maximizarMinimo = (alternatives, matrix, criteria) => {
+      for (let i = 0; i < criteria.length; i++) {  
+        if (criteria[i].kind === "min") {
+          for (let j = 0; j < alternatives.length; j++) {
+            matrix[i][j] = 1/matrix[i][j];      
+           }
+            criteria[i].kind = "max"
+          }
+        }
+    }
+
+
   const normalizeMatrix = (matrix, alternatives, criteria) => {
     //First Step - Normalice Matrix
+
     switch (normalization) {
       case "maximum":
         matrix = normalizeByMax(matrix, criteria);
@@ -158,12 +172,16 @@ export default function Lineal() {
           criteriaToColumn(criteria);
           //Paso los valores de cada criterio a una matriz para poder trabajarla
           matrix = toMatrix(criteria, alternatives);
+          maximizarMinimo(alternatives, matrix, criteria)
           callback(null, "Configuracion Inicial");
         },
         function (callback) {
           //Normalizacion - Se modifica la matriz global y tambien se guarda la normalizada para mostrar
           //dentro de la funcion normalize
+
+
           matrix = normalizeMatrix(matrix, alternatives, criteria);
+
           callback(null, "Normalizada");
         },
         function (callback) {
@@ -275,3 +293,4 @@ export default function Lineal() {
     </div>
   );
 }
+
